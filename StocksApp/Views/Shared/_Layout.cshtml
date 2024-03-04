@@ -32,9 +32,6 @@
                 <a asp-action="Orders" asp-controller="Trade" class="link-hover @(ViewBag.ActivePage != null && ViewBag.ActivePage == "Trade/Orders" ? "nav-active" : "")" style="text-decoration: none; color: #0349A3;">Orders</a>
             </div>
         </div>
-        <div class="flex ml mt">
-            <p class="text-grey">Stocks <i class="fa-solid fa-caret-right"></i> @ViewBag.Title</p>
-        </div>
 
         @RenderBody()
 

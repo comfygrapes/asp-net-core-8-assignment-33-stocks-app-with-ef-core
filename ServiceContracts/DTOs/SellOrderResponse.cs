@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ServiceContracts.DTOs
 {
-    public class SellOrderResponse
+    public class SellOrderResponse : IOrderResponse
     {
         public Guid SellOrderId { get; set; }
         public string? StockSymbol { get; set; }

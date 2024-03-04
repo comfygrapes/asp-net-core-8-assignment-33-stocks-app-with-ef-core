@@ -7,8 +7,12 @@ namespace Services
 {
     public class StocksService : IStocksService
     {
-        private readonly List<BuyOrder> _buyOrders = new List<BuyOrder>();
-        private readonly List<SellOrder> _sellOrders = new List<SellOrder>();
+        private readonly StockMarketDbContext _stockMarketDbContext;
+
+        public StocksService(StockMarketDbContext stockMarketDbContext)
+        {
+            _stockMarketDbContext = stockMarketDbContext;
+        }
 
         public async Task<BuyOrderResponse> CreateBuyOrder(BuyOrderRequest? buyOrderRequest)
         {
@@ -17,7 +21,8 @@ namespace Services
 
             var buyOrder = buyOrderRequest.ToBuyOrder(Guid.NewGuid());
 
-            _buyOrders.Add(buyOrder);
+            await _stockMarketDbContext.AddAsync(buyOrder);
+            await _stockMarketDbContext.SaveChangesAsync();
 
             return buyOrder.ToBuyOrderResponse();
         }
@@ -29,21 +34,22 @@ namespace Services
 
             var sellOrder = sellOrderRequest.ToSellOrder(Guid.NewGuid());
 
-            _sellOrders.Add(sellOrder);
+            await _stockMarketDbContext.AddAsync(sellOrder);
+            await _stockMarketDbContext.SaveChangesAsync();
 
             return sellOrder.ToSellOrderResponse();
         }
 
         public async Task<List<BuyOrderResponse>> GetAllBuyOrders()
         {
-            var allBuyOrders = _buyOrders.Select(buyOrder => buyOrder.ToBuyOrderResponse()).ToList();
+            var allBuyOrders = _stockMarketDbContext.BuyOrders.Select(buyOrder => buyOrder.ToBuyOrderResponse()).ToList();
 
             return allBuyOrders;
         }
 
         public async Task<List<SellOrderResponse>> GetAllSellOrders()
         {
-            var allSellOrders = _sellOrders.Select(sellOrder => sellOrder.ToSellOrderResponse()).ToList();
+            var allSellOrders = _stockMarketDbContext.SellOrders.Select(sellOrder => sellOrder.ToSellOrderResponse()).ToList();
 
             return allSellOrders;
         }

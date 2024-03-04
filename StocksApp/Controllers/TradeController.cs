@@ -4,6 +4,7 @@ using StocksApp.Options;
 using ServiceContracts;
 using StocksApp.ViewModels;
 using ServiceContracts.DTOs;
+using Rotativa.AspNetCore;
 
 namespace StocksApp.Controllers
 {
@@ -62,6 +63,22 @@ namespace StocksApp.Controllers
             };
 
             return View(orders);
+        }
+
+        [HttpGet]
+        [Route("[Action]")]
+        public async Task<IActionResult> OrdersPDF()
+        {
+            var buyOrders = await _stocksService.GetAllBuyOrders();
+            var sellOrders = await _stocksService.GetAllSellOrders();
+
+            var orders = ((IEnumerable<IOrderResponse>)buyOrders).Concat(sellOrders).OrderByDescending(order => order.DateAndTimeOfOrder).ToList();
+
+            return new ViewAsPdf("OrdersPDF", orders)
+            {
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape,
+                PageMargins = new Rotativa.AspNetCore.Options.Margins() { Top = 20, Bottom = 20, Left = 20, Right = 20 },
+            };
         }
 
         [HttpPost]

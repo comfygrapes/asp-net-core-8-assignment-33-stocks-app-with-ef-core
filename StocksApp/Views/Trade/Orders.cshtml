@@ -5,6 +5,14 @@
     ViewData["ActivePage"] = "Trade/Orders";
 }
 
+<div class="flex ml mt">
+    <div class="flex-1">
+        <p class="text-grey">Stocks <i class="fa-solid fa-caret-right"></i> @ViewBag.Title</p>
+    </div>
+    <div class="flex-1 text-right mr">
+        <a asp-action="OrdersPDF" asp-controller="Trade">Download as PDF</a>
+    </div>
+</div>
 <div class="flex">
     <div class="flex-1 flex-direction-vertical box" style="padding: 20px;">
         <div class="flex">

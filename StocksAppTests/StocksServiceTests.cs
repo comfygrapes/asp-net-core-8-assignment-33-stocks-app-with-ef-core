@@ -1,6 +1,8 @@
+using Entities;
 using ServiceContracts;
 using ServiceContracts.DTOs;
 using Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace StocksAppTests
 {
@@ -10,7 +12,7 @@ namespace StocksAppTests
 
         public StocksServiceTests()
         {
-            _stocksService = new StocksService();
+            _stocksService = new StocksService(new StockMarketDbContext(new DbContextOptionsBuilder<StockMarketDbContext>().Options));
         }
 
         #region CreateBuyOrder
